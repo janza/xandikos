@@ -1003,15 +1003,18 @@ def rruleset_from_comp(comp: Component) -> dateutil.rrule.rruleset:
             exdates = [exdates]
         for exdate in exdates:
             for vDDDTypes in exdate.dts:
-                rs.exdate(vDDDTypes.dt)
-    if "RDATE" in comp:
+                if type(vDDDTypes.dt) == datetime:
+                    rs.exdate(vDDDTypes.dt)
 
+    if "RDATE" in comp:
         rdates = comp["RDATE"]
         if type(rdates) != list:
             rdates = [rdates]
         for rdate in rdates:
             for vDDDTypes in rdate.dts:
-                rs.rdate(vDDDTypes.dt)
+                if type(vDDDTypes.dt) == datetime:
+                    rs.rdate(vDDDTypes.dt)
+
     if "EXRULE" in comp:
         exrulestr = comp["EXRULE"].to_ical().decode("utf-8")
         exrule = dateutil.rrule.rrulestr(exrulestr, dtstart=dtstart)
