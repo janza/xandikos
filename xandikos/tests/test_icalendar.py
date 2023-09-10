@@ -100,7 +100,7 @@ PRODID:-//bitfire web engineering//DAVdroid 0.8.0 (ical4j 1.0.x)//EN
 BEGIN:VEVENT
 DTSTART:20150527T221952Z
 DURATION:P1D
-RRULE:FREQ=YEARLY;UNTIL=20180314T223512Z
+RRULE:FREQ=YEARLY;
 LAST-MODIFIED:20150314T223512Z
 SUMMARY:do something
 CATEGORIES:home
@@ -465,14 +465,12 @@ class CalendarFilterTests(unittest.TestCase):
         self.cal = ICalendarFile([EXAMPLE_VCALENDAR_RRULE], "text/calendar")
 
         self.assertEqual(
-            self.cal.get_indexes(["C=VCALENDAR/C=VEVENT/P=DTSTART"]),
-            {'C=VCALENDAR/C=VEVENT/P=DTSTART': [
-                b'20150527T221952', b'20160527T221952', b'20170527T221952']})
+            self.cal.get_indexes(["C=VCALENDAR/C=VEVENT/P=DTSTART"])['C=VCALENDAR/C=VEVENT/P=DTSTART'][:3],
+            [b'20150527T221952', b'20160527T221952', b'20170527T221952'])
 
         self.assertEqual(
-            self.cal.get_indexes(["C=VCALENDAR/C=VEVENT/P=DURATION"]),
-            {'C=VCALENDAR/C=VEVENT/P=DURATION': [
-                b'P1D', b'P1D', b'P1D']})
+            self.cal.get_indexes(["C=VCALENDAR/C=VEVENT/P=DURATION"])['C=VCALENDAR/C=VEVENT/P=DURATION'][:3],
+            [b'P1D', b'P1D', b'P1D'])
 
         filter = CalendarFilter(pytz.utc)
         filter.filter_subcomponent("VCALENDAR").filter_subcomponent(

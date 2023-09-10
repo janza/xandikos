@@ -1041,7 +1041,10 @@ def _expand_rrule_component(
         it = rs.before(end)
     else:
         it = rs
-    for ts in it:
+    for idx, ts in enumerate(it):
+        # Stop iterator if there's too many items
+        if idx > 10000:
+            return
         utcts = asutc(ts)
         try:
             outcomp = existing.pop(utcts)
